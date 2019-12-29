@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Chat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="custom.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container h-100 d-flex justify-content-center">
+    <h2 class="h2">CHAT</h2>
+    <div id="connectView" class="jumbotron my-auto form-group text-center">
+        <div class="form-group row vertical-center">
+            <label for="username" class="col-form-label">Username:</label>
+            <input type="text" id="username"/>
+        </div>
+        <button class="btn btn-primary" type="button" onclick="openSocket();" >Connect</button>
+    </div>
+    <div id="chatView" style="display: none" class="text-center row">
+        <div class="col-lg-9">
+                <div class="form-group">
+                    <textarea class="form-control rounded-0" id="chatWindow" rows="20"></textarea>
+                </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <textarea class="form-control rounded-0" id="chatUsers" rows="20"></textarea>
+            </div>
+        </div>
+        <input type="text" id="input"/>
+        <button type="button" onclick="send();" class="btn bg-primary">Send</button>
+        <button type="button" onclick="closeSocket();" class="btn btn-danger">Disconnect</button>
+    </div>
+    <!-- Server responses get written here -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="userNameTaken" tabindex="-1" role="dialog" aria-labelledby="userNameTaken" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Username is already taken!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script to utilise the WebSocket -->
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+</html>
