@@ -66,6 +66,7 @@ function openSocket() {
                 writeResponse(`${response.user} (${response.date}): ${response.message}`);
                 break;
             case 'USER_UPDATE':
+                console.log(response.user + " type " +response.message);
                 if (response.user === '') {
                     document.getElementById('chatUsers').innerHTML = '';
                 } else {
@@ -94,7 +95,6 @@ function sendConnectRequest() {
         date: '',
         type: 'CONNECT'
     };
-    console.log(msg);
     webSocket.send(JSON.stringify(msg));
 }
 

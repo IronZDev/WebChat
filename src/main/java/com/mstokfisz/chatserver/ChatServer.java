@@ -41,7 +41,7 @@ public class ChatServer {
     public void onMessage(Message message, Session session) throws IOException, EncodeException {
         String userName = message.getUser();
         boolean userNameExists = false;
-        for (User user : userList) {
+        for (User user : ChatServer.userList) {
             if (user.getName().equals(userName)) {
                 userNameExists = true;
                 if (message.getMessageType() == MessageType.CONNECT) { // Find a new name
@@ -50,7 +50,7 @@ public class ChatServer {
                         boolean stillExists = true;
                         while (stillExists) {
                             stillExists = false;
-                            for (User usr : userList) {
+                            for (User usr : ChatServer.userList) {
                                 if (usr.getName().equals(userName+counter)) {
                                     stillExists = true;
                                     counter++;
@@ -78,7 +78,7 @@ public class ChatServer {
         }
         if (!userNameExists) {
             User newUser = new User(userName, session);
-            userList.add(newUser);
+            ChatServer.userList.add(newUser);
             for (Message oldMessage : ChatServer.messagesList) {
                 newUser.getSession().getBasicRemote().sendObject(oldMessage);
             }
@@ -101,7 +101,7 @@ public class ChatServer {
      */
     @OnClose
     public void onClose(Session session){
-        for (User user : userList) {
+        for (User user : ChatServer.userList) {
             if (user.getSession().getId().equals(session.getId())) {
                 user.removeSession();
                 user.setNonWriting();
@@ -118,13 +118,13 @@ public class ChatServer {
     }
 
     private void sendUserUpdate() throws IOException, EncodeException {
-        Message message = new Message(new Date(), "", "", MessageType.USER_UPDATE);
-        for (User user: userList) {
+        for (User user: ChatServer.userList) {
             if (user.getSession() != null) {
+                Message message = new Message(new Date(), "", "", MessageType.USER_UPDATE); // Send empty message to clear list
                 user.getSession().getBasicRemote().sendObject(message);
-                for (User userOther: userList) {
+                for (User userOther: ChatServer.userList) {
                     message.setUser(userOther.getName());
-                    if (user.getSession() != null) {
+                    if (userOther.getSession() != null) {
                         message.setMessageContent(userOther.getIsWriting() ? "WRITING" : "ONLINE");
                     } else {
                         message.setMessageContent("OFFLINE");
@@ -136,7 +136,7 @@ public class ChatServer {
     }
 
     private void sendMessageToAll(Message message) throws IOException, EncodeException {
-        for (User user: userList) {
+        for (User user: ChatServer.userList) {
             if (user.getSession() != null) {
                 user.getSession().getBasicRemote().sendObject(message);
             }
