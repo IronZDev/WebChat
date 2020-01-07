@@ -77,6 +77,11 @@ public class ChatServer {
             }
         }
         if (!userNameExists) {
+//            for (User oldUserSession : ChatServer.userList) {
+//                if(oldUserSession.getSession().getId().equals(session.getId())) {
+//                    oldUserSession.removeSession();
+//                }
+//            }
             User newUser = new User(userName, session);
             ChatServer.userList.add(newUser);
             for (Message oldMessage : ChatServer.messagesList) {
@@ -102,7 +107,7 @@ public class ChatServer {
     @OnClose
     public void onClose(Session session){
         for (User user : ChatServer.userList) {
-            if (user.getSession().getId().equals(session.getId())) {
+            if (user.getSession() != null && user.getSession().getId().equals(session.getId())) {
                 user.removeSession();
                 user.setNonWriting();
                 try {

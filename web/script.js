@@ -28,6 +28,7 @@ document.getElementById("input").onkeyup = function(event) {
 };
 
 function openSocket() {
+    console.log('Clicked');
     user = document.getElementById('username').value;
     if (user.length === 0) {
         alert('Please provide a nickname!');
@@ -36,6 +37,7 @@ function openSocket() {
     // Ensures only one connection is open at a time
     if (webSocket !== undefined && webSocket.readyState !== WebSocket.CLOSED) {
         if (document.getElementById('chatView').hasAttribute('style')) {
+            console.log('Send request');
             sendConnectRequest();
         }
         return;
